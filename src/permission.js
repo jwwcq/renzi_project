@@ -8,8 +8,12 @@ const whiteList = ['/login', '/404']
 // 1.1存在处于登录状态是否去往登录页处于则去首页否则放行
 // 1.2不存在不处于登录状态去往页面是否处于白名单处于则放行否则登录页
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   if (store.getters.token) { // 判断是否有token
+    // 获取用户数据
+    if (!store.getters.userId) {
+      await store.dispatch('user/getUserInfo')
+    }
     if (to.path === '/login') { //  如果有token  前往的页面是登录页面则组织跳转  并且跳转到首页
       next('/')
     } else { // 有token 跳往除登录以外的其它页面  则放行

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
-    <svg-icon iconClass="eye-open"></svg-icon>
+    <svg-icon icon-class="eye-open" />
   </div>
 </template>
 
@@ -15,6 +15,10 @@ export default {
       'name'
     ])
   }
+  // async created() {
+  //   const res = await this.$store.dispatch('user/getUserInfo')
+  //   console.log(res)
+  // }
 }
 </script>
 

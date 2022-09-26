@@ -1,12 +1,23 @@
 // 实现对axios的二次封装
 import axios from 'axios'
 import { Message } from 'element-ui'
-
+import store from '@/store'
 const service = axios.create({
   // process.env  获取当前环境下的环境变量
   baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000
 })
+// 请求拦截器
+service.interceptors.request.use(config => {
+  // console.log(config)
+  if (store.getters.token) {
+    config.headers.Authorization = `Bearer ${store.getters.token}`
+  }
+  return config
+}, error => {
+  return Promise.reject(error)
+})
+
 // 响应拦截器
 service.interceptors.response.use(response => {
   // 1、考虑把 哪些数据抛出去
