@@ -35,6 +35,12 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/api': {
+        target: 'http://ihrm-java.itheima.net/',
+        changeOrigin: true
+      }
     }
     // 模拟数据
     // before: require('./mock/mock-server.js')
