@@ -20,7 +20,9 @@ const store = new Vuex.Store({
       return {
         // 只储存state中的token
         user: {
-          token: state.user.token
+          token: state.user.token,
+          // userInfo: state.user.userInfo,
+          hrsaasTime: state.user.hrsaasTime
         }
       }
     }

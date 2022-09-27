@@ -4,7 +4,8 @@ export default {
   namespaced: true,
   state: {
     token: null,
-    userInfo: {}
+    userInfo: {},
+    hrsaasTime: 0
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -17,13 +18,19 @@ export default {
     // 退出登录时清空userinfo token
     REMOVE_USER_INFO(state) {
       state.userInfo = {}
+    },
+    REMOVE_TOKEN(state) {
       state.token = null
+    },
+    SET_HRSAAS_TIME(state, hrsaasTime) {
+      state.hrsaasTime = hrsaasTime
     }
   },
   actions: {
     async LoginAction({ commit }, LoginData) {
       const data = await login(LoginData)
       commit('SET_TOKEN', data)
+      commit('SET_HRSAAS_TIME', new Date().getTime())
     },
     async getUserInfo({ commit }) {
       // 获取用户信息
@@ -35,6 +42,10 @@ export default {
       const result = { ...data, ...data1 }
       commit('SET_USER_INFO', result)
       return JSON.parse(JSON.stringify(result))
+    },
+    logout({ commit }) {
+      commit('REMOVE_USER_INFO')
+      commit('REMOVE_TOKEN')
     }
   }
 
