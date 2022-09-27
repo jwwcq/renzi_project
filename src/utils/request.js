@@ -48,7 +48,7 @@ service.interceptors.response.use(response => {
   //  业务逻辑没有成功   需要手动new Error 然后把错误抛出去
   return Promise.reject(new Error(message))
 }, error => {
-  // console.log(error)
+  console.log(error.response)
   if (error.response?.status === 401) {
     store.dispatch('user/logout')
     router.push('/login')
