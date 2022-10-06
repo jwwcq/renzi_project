@@ -1,7 +1,7 @@
 <template>
 
   <!-- 新增部门的弹层 -->
-  <el-dialog title="新增部门" :visible="dialogVisible" @close="handleClise">
+  <el-dialog :title="title" :visible="dialogVisible" @close="handleClise">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form ref="addDeptForm" label-width="120px" :model="formData" :rules="rules">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getDepartmentsAPI, addDepartments } from '@/api/departments.js'
+import { getDepartmentsAPI, addDepartments, updateDepartments } from '@/api/departments.js'
 import { getEmployessSimple } from '@/api/employees'
 export default {
   name: 'AddDept',
@@ -51,13 +51,25 @@ export default {
     const checkCodeRepeat = async(rule, value, callback) => {
       const { depts } = await getDepartmentsAPI()
       // console.log(depts)
-      depts.some(ele => ele.code === value) ? callback(new Error(`模块下已经存在${value}编码`)) : callback()
+      if (this.formData.id) { // 如果有id
+        depts.some(ele => ele.id !== this.formData.id && ele.code === value) ? callback(new Error(`模块下已经存在${value}编码`)) : callback()
+      } else {
+        depts.some(ele => ele.code === value) ? callback(new Error(`模块下已经存在${value}编码`)) : callback()
+      }
+
+      // 编辑模式下,让我自己和自己对比校验了？？？
+      //  解决方案, 对比的过程中吧自己排除掉, 然后再去对比
     }
     const nameCheck = async(rule, value, callback) => {
       const { depts } = await getDepartmentsAPI()
-      const deptstj = depts.filter(item => item.pid === this.treeNode.id)
-      // console.log(deptstj)
-      deptstj.some(item => item.name === value) ? callback(new Error(`该部门下已经存在${value}部门名称`)) : callback()
+      if (this.formData.id) { //  编辑
+        const deptstj1 = depts.filter(item => item.pid === this.treeNode.pid && item.id !== this.treeNode.id)
+        deptstj1.some(item => item.name === value) ? callback(new Error(`该部门下已经存在${value}部门名称`)) : callback()
+      } else { // 新增
+        const deptstj = depts.filter(item => item.pid === this.treeNode.id)
+        // console.log(deptstj)
+        deptstj.some(item => item.name === value) ? callback(new Error(`该部门下已经存在${value}部门名称`)) : callback()
+      }
       callback()
     }
     return {
@@ -94,6 +106,11 @@ export default {
       loading: false
     }
   },
+  computed: {
+    title() {
+      return this.formData.id ? '编辑部门' : '新增部门'
+    }
+  },
   methods: {
     handleClise() {
       this.$emit('update:dialogVisible', false)
@@ -114,8 +131,12 @@ export default {
       try {
         await this.$refs.addDeptForm.validate()
         this.loading = true
-        await addDepartments({ ...this.formData, pid: this.treeNode.id })
-        this.$message.success('新增成功！')
+        if (this.formData.id) {
+          await updateDepartments(this.formData)
+        } else {
+          await addDepartments({ ...this.formData, pid: this.treeNode.id })
+        }
+        this.$message.success(`${this.formData.id ? '编辑' : '新增'}` + '成功！')
         this.$parent.getDepartments()
         this.handleClise()
       } catch (error) {
