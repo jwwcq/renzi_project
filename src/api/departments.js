@@ -8,3 +8,15 @@ export function getDepartmentsAPI() {
     url: '/company/department'
   })
 }
+
+/**
+ *  新增部门接口
+ *
+ * ****/
+export const addDepartments = (data) => {
+  return request({
+    url: '/company/department',
+    method: 'post',
+    data
+  })
+}
