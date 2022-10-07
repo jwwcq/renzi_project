@@ -21,6 +21,9 @@ import * as directives from '@/directives'
 // console.log(directives)
 // console.log(Object.keys(directives)) // 获取对象的属性名  是一个数组
 
+import components from '@/components/index'
+Vue.use(components)
+
 Object.keys(directives).forEach(ele => {
   //  自定义属性名    自定义属性的内容
   Vue.directive(ele, directives[ele])
