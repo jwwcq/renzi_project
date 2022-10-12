@@ -22,8 +22,12 @@
 // require.context 返回的函数 的作用 根据路径 找到对应的模块
 const requireComponent = require.context('./', true, /\.vue$/)
 const res = requireComponent.keys().map(requireComponent)
+import * as filters from '@/filters/index'
 export default (Vue) => {
   res.forEach(ele => {
     Vue.component(ele.default.name, ele.default)
+  })
+  Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
   })
 }
