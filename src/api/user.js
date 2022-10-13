@@ -14,6 +14,14 @@ export const getUserDetailById = (id) => request({
   url: `/sys/user/${id}`
 })
 
-export function logout() {
+/**
+ *  保存用户信息
+ * @param {*} data  {}
+ * @returns Promise
+ */
+export const saveUserDetailById = (data) => request({
+  url: `/sys/user/${data.id}`,
+  method: 'PUT',
+  data
+})
 
-}

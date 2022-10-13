@@ -52,3 +52,43 @@ export function importEmployee(data) {
   })
 }
 
+export const getEmployeeInfo = (id) => {
+  return request({
+    url: `/employees/${id}/personalInfo`
+  })
+}
+
+/**
+ *  保存员工基本信息
+ * @param {*} data {}
+ * @returns Promise
+ */
+export const saveEmployeeInfo = (data) => {
+  return request({
+    url: `/employees/${data.userId}/personalInfo`,
+    method: 'PUT',
+    data
+  })
+}
+/**
+ *  获取岗位信息
+ * @param {*} id
+ * @returns Promise
+ */
+export const getEmployeesJobInfo = (id) => {
+  return request({
+    url: `/employees/${id}/jobs`
+  })
+}
+/**
+ *  保存岗位信息
+ * @param {*} data {}
+ * @returns Promise
+ */
+export const saveEmployeesJobInfo = (data) => {
+  return request({
+    url: `/employees/${data.userId}/jobs`,
+    method: 'PUT',
+    data
+  })
+}
