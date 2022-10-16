@@ -14,6 +14,11 @@
     <el-card>
       <el-table :data="list" border>
         <el-table-column label="序号" sortable width="80" type="index" />
+        <el-table-column label="头像">
+          <template slot-scope="{row}">
+            <img style="width: 60px;height: 60px;border-radius: 50%;" :src="row.staffPhoto" @click="genQrCode(row.staffPhoto)">
+          </template>
+        </el-table-column>
         <el-table-column label="姓名" prop="username" />
         <el-table-column label="工号" prop="workNumber" />
         <el-table-column
@@ -67,6 +72,15 @@
       </el-row>
     </el-card>
     <addEmployee :dialog-visible.sync="dialogVisible" />
+    <el-dialog
+      title="二维码"
+      :visible.sync="dialogVisibleQrCode"
+      width="30%"
+    >
+
+      <canvas ref="canvas" class="canvas" />
+
+    </el-dialog>
   </div>
 </template>
 
@@ -74,6 +88,7 @@
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import EnumHireType from '@/api/constant/employees'
 import addEmployee from '@/views/employees/components/add-employee'
+import QRCode from 'qrcode'
 export default {
   components: {
     addEmployee
@@ -88,7 +103,8 @@ export default {
       total: 0,
       loading: false,
       hireType: EnumHireType.hireType,
-      dialogVisible: false
+      dialogVisible: false,
+      dialogVisibleQrCode: false
     }
   },
   mounted() {
@@ -185,8 +201,24 @@ export default {
     },
     goDeatil(row) {
       this.$router.push('/employees/detail/' + row.id)
+    },
+    genQrCode(staffPhoto) {
+      if (!staffPhoto) return this.$message.error('没有图片')
+      this.dialogVisibleQrCode = true
+      this.$nextTick(() => {
+        QRCode.toCanvas(this.$refs.canvas, staffPhoto, function(error) {
+          if (error) console.error(error)
+          console.log('success!')
+        })
+      })
     }
   }
 
 }
 </script>
+<style lang="scss" scoped>
+  .canvas{
+    width: 100% !important;
+    height: 100% !important;
+  }
+</style>

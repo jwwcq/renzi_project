@@ -4,7 +4,9 @@
       <tree-tools :tree-node="company" :is-root="false" @addDept="addDepts" />
     </el-card>
     <el-tree :data="data" :default-expand-all="true" :props="defaultProps">
-      <tree-tools slot-scope="{data}" :tree-node="data" @addDept="addDepts" @editDept="editDept" @refreshList="getDepartments" />
+      <template slot-scope="scoped">
+        <tree-tools :tree-node="scoped.data" @addDept="addDepts" @editDept="editDept" @refreshList="getDepartments" />
+      </template>
     </el-tree>
     <add-dept ref="addDept" :dialog-visible.sync="dialogVisible" :tree-node="currentNode" />
   </div>

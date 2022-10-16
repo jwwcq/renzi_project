@@ -15,7 +15,9 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
-
+// 打印插件
+import Print from 'vue-print-nb'
+Vue.use(Print)
 // 引入所有指令  并用as关键字起个别名接收 是一个对象
 import * as directives from '@/directives'
 // console.log(directives)

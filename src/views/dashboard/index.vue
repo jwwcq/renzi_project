@@ -1,12 +1,10 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
-    <svg-icon icon-class="eye-open" />
-  </div>
+  <div class="dashboard-container" />
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'Dashboard',
   computed: {
@@ -27,11 +25,11 @@ export default {
       }
       return true
     }
-  }
-  // async created() {
+  } // async created() {
   //   const res = await this.$store.dispatch('user/getUserInfo')
   //   console.log(res)
   // }
+
 }
 </script>
 
