@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      <el-button v-print="'myPrint'" type="primary">打印</el-button>
+
       <el-card>
         <el-breadcrumb separator="/" class="titInfo ">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -327,6 +327,7 @@
         </div>
       </el-card>
     </div>
+    <el-button v-print="'myPrint'" style="float: right;z-index: 999;" type="primary">打印</el-button>
   </div>
 </template>
 
